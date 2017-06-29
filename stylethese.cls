@@ -18,6 +18,7 @@
   %\RequirePackage{doublespace,indentfirst,epsfig,ifthen,remreset,graphicx,dcolumn,amsmath,makeidx,multicol,natbib}
   \RequirePackage{setspace,remreset,graphicx,makeidx,ifthen, tikz}
   \RequirePackage[english,frenchb]{babel} % frenchb default
+  %\RequirePackage[T1]{fontenc} % Encoding for French 
 % \RequirePackage[frenchb,english]{babel} % english default
   \LoadClassWithOptions{book}
   \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
@@ -38,8 +39,6 @@
     \setlength\headheight     {  12pt}
     \setlength\topmargin      {-1.0cm}
     \setlength\headsep        { 1.3cm}
-    \setlength\oddsidemargin  { 1.0cm} % left margin for p.1,3,5...
-    \setlength\evensidemargin { 0.0cm} % left margin for p.2,4,6...
     \setlength\oddsidemargin  { 1.0cm} % left margin for p.1,3,5...
     \setlength\evensidemargin { 0.0cm} % left margin for p.2,4,6...
     \setlength\textwidth      {15.6cm}
@@ -168,9 +167,8 @@
 %  \newcommand\These{\newcommand\@Travail{TH\`ESE}\newcommand\@Presente{PR\'{E}SENT\'{E}E}}
   \newcommand\These{\newcommand\@Travail{Th\`ese}\newcommand\@Presente{pr\'esent\'ee}}
   \newcommand\Memoire{\newcommand\@Travail{M\'EMOIRE}\newcommand\@Presente{PR\'{E}SENT\'{E}}}
-  \newcommand\Memoire{\newcommand\@Travail{M\'EMOIRE}\newcommand\@Presente{PR\'{E}SENT\'{E}}}
 
-
+% http://tlsflyleaf.onada.fr/index.php To look for jury composition
   \newcommand{\JuryA}[6]{\newcommand\@JuryAcv{#1}\newcommand\@JuryAprenom{#2}
       \newcommand\@JuryAnom{#3}\newcommand\@JuryAgrade{#4}\newcommand\@JuryAetablissement{#5}\newcommand\@JuryAstatut{#6}}
   \newcommand{\JuryB}[6]{\newcommand\@JuryBcv{#1}\newcommand\@JuryBprenom{#2}
