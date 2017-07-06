@@ -1,3 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Thesis style for the University of Montpellier  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Contributeurs originaux:
 %
 % Style pour la redaction de these et de memoires.
 % UQAR, 29 mai 2009.
@@ -6,32 +10,53 @@
 % (UQAM), avec leur assentimment (consenti a Pierre Saint-Laurent,
 % Avril 2009).
 %
-% Modifi� par Fr�d�ric Cyr dans le but de rendre conforme aux exigences du guide de r�daction de janvier 2012 de l'UQAR.
+% Modifié par Frédéric Cyr dans le but de rendre conforme aux exigences du guide de r�daction de janvier 2012 de l'UQAR.
 % Aout 2013
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Modifié par Kévin Cazelles (Date)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Modifié par Alain Danet pour le rendre conforme au style de l'Université de
+% Montpellier (Julliet 2017) 
+% Membres du jury: (source: http://tlsflyleaf.onada.fr/down.php)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% Preambule.
-%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Preambule
+
   \NeedsTeXFormat{LaTeX2e}
-  \ProvidesClass{stylethese}[2009/05/10 Style pour theses UQAR]
-  %\RequirePackage{doublespace,cite,indentfirst,epsfig,ifthen}
-  %\RequirePackage{doublespace,indentfirst,epsfig,ifthen,remreset,graphicx,dcolumn,amsmath,makeidx,multicol,natbib}
+  % The date below is really important:
+  % https://tex.stackexchange.com/questions/166558/custom-class-creating-compilation-problems
+  \ProvidesClass{stylethese2}[2017/07/05 Style pour theses UM]
   \RequirePackage{setspace,remreset,graphicx,makeidx,ifthen, tikz}
   \RequirePackage[english,frenchb]{babel} % frenchb default
-  %\RequirePackage[T1]{fontenc} % Encoding for French 
-% \RequirePackage[frenchb,english]{babel} % english default
+  %https://tex.stackexchange.com/questions/9908/difference-between-loadclass-and-loadclasswithoptions 
   \LoadClassWithOptions{book}
   \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
   \ProcessOptions\relax
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % General.
 
-  \setlength{\parindent}{1cm}
+  \setlength{\parindent}{1cm} % indentation des paragraphes
   \parskip 11pt plus 1pt minus 1pt % espace suplementaire entre les paragraphes (2 interligne)
+  %https://en.wikibooks.org/wiki/LaTeX/Counters
   \newcounter{annexe}
   \setcounter{annexe}{0}
+  %% Bold environment:
+  %https://tex.stackexchange.com/questions/149404/bold-text-in-newenvironment
+  \newenvironment{boldenv}
+    {\bfseries}% \begin{boldenv}
+      {}% \end{boldenv}
 
-% Marges.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Margin.
+
+%https://www.sharelatex.com/learn/Lengths_in_LaTeX
 
   \setlength{\belowcaptionskip}{0.5cm}
 
@@ -53,25 +78,157 @@
     \setlength\textheight     {21.6cm}
   \fi
 
+%https://tex.stackexchange.com/questions/588/how-can-i-change-the-margins-for-only-part-of-the-text
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+
+  \RequirePackage{etoolbox}
+
+  \def\unilogo#1{\def\@unilogo{#1}}
+  \def\lablogo#1{\def\@lablogo{#1}}
+  \def\university#1{\def\@university{#1}}
+  \def\docschool#1{\def\@docschool{#1}}
+  \def\lab#1{\def\@lab{#1}}
+  \def\field#1{\def\@field{#1}}
+  \def\titleEng#1{\def\@titleEng{#1}}
+  \def\defensedate#1{\def\@defensedate{#1}}
+  \def\serienumber#1{\def\@serienumber{#1}}
+  % number of jury members:
+  \def\njurymembers#1{\def\@njurymembers{#1}}
+
+  \newcommand{\addjurymember}[4]{%
+      \expandafter\gdef\csname @juryTitle#1\endcsname{#2}
+      \expandafter\gdef\csname @juryName#1\endcsname{#3}
+      \expandafter\gdef\csname @juryFunction#1\endcsname{#4}
+  }
+
+  \newtoks\@tabtoks
+  \newcommand\addtabtoks[1]{\global\@tabtoks\expandafter{\the\@tabtoks#1}}
+  \newcommand\eaddtabtoks[1]{\edef\mytmp{#1}\expandafter\addtabtoks\expandafter{\mytmp}}
+  \newcommand*\resettabtoks{\global\@tabtoks{}}
+  \newcommand*\printtabtoks{\the\@tabtoks}
+
+  \def\margepagetitre#1#2{\list{}{\leftmargin#1\rightmargin#2}\item[]}
+  \let\endquote=\endlist
+  \definecolor{titlepagecolor}{cmyk}{0,0,0,80}
+  \definecolor{titlepagecolor2}{RGB}{196,175,153}
+
+  \newcommand\Pagetitre{
+      \thispagestyle{empty}% Suppress numbering for title page 
+      \begin{margepagetitre}{3.75cm}{-1cm}
+	  %\setlength\textwidth{19cm}
+	  \begin{boldenv}
+	    
+      %En-tête
+	      \begin{tikzpicture}[remember picture,overlay]
+		  %Banière
+		  \node [rectangle, 
+		      bottom color=titlepagecolor!40!white, 
+		      top color=white, 
+		      anchor=north west, 
+		      minimum width=6.0cm, 
+		      minimum height=\paperheight-0.8cm] (box) at
+		      ([xshift=0.4cm, yshift=-0.4cm]current page.north west){};
+		  %dashed line
+		  \draw [dash pattern= on 0.6mm off 0.4mm] ([xshift=6.2cm, yshift=-0.4cm]current page.north
+		      west) -- ([xshift=6.2cm, yshift=0.4cm]current page.south
+		      west);
+
+		  % Logo établissement
+		  \node [anchor=south west] (logo1) at ([xshift=1.2cm, yshift=1cm]current
+		      page.south west){\includegraphics[width=4cm]{img/logo_um.pdf}};
+		  % Logo collège doctoral
+		  \node [anchor=north west] (logo2) at ([xshift=1.2cm, yshift=-2cm]current page.north
+		      west){\includegraphics[width=4cm]{img/logo_college_doctoral_LR.pdf}};
+		  % Logo grade
+		  \node [anchor=north west, text width=\paperwidth, text height=4cm] (grade) at ([xshift=6.5cm, yshift=-2cm]current
+		      page.north west){\includegraphics[width=12cm]{img/logo_grade_docteur.pdf}};
+
+	      \end{tikzpicture}
+
+	      \begin{center}
+
+		  \null\vskip+2.0cm % PSL
+
+		  \vskip0.1cm{D\'elivr\'ee par
+		  \ifdef{\@university}{ \MakeUppercase{\@university} }{~}} \\
+		  \vskip1cm{Pr\'epar\'ee au sein de l'\'ecole doctorale
+		  \ifdef{\@docschool}{ \MakeUppercase{\@docschool} }{~}} \\
+		  %\vskip0.1cm{Et de l'unit\'e de recherche \@UniteRecherche}
+		  \vskip0.1cm{Et des unit\'es de recherche 
+		  \ifdef{\@lab}{\@lab}{~}}
+		  \vskip0.5cm{Specialit\'e: 
+		  \ifdef{\@field}{\@field}{~}} \\
+		  \vskip2cm{Pr\'esent\'ee par 
+		  \ifdef{\@author}{\@author}{Pr\'enom Nom}} \\
+
+		  \vskip2cm
+		  \fbox{
+		      \begin{minipage}[t][3cm][t]{\textwidth-4cm}\centering
+			  \textbf{\ifdef{\@title}{\Large\MakeUppercase{\@title}}{\Large\MakeUppercase{titre
+			  de la Th\`ese}}}
+		      \end{minipage}
+		  }
+
+
+		  \vskip1cm{Soutenue le devant le jury compos\'e de}
+		  \vskip1.5cm
+	      \end{center}
+
+	      \resettabtoks
+
+	      \foreach \n in {1,...,\@njurymembers}
+	      {%
+		  \-\hspace{0.7cm} 
+		  \eaddtabtoks{ {\csname @juryTitle \n \endcsname} }
+		  \eaddtabtoks{ {\csname @juryName \n \endcsname} }
+		  \addtabtoks{ & } \eaddtabtoks{({\csname @juryFunction \n \endcsname
+		  }) }
+	      \addtabtoks{ \\ } }%
+
+	      %% http://tlsflyleaf.onada.fr/down.php
+	      \ifnum \@njurymembers=0
+	     Membres du jury 
+	      \else
+	      \begin{table}[h!]
+		  \large
+		  \begin{center}
+		      \begin{tabular}{*{2}{p{0.34\textwidth}}}          
+			  \printtabtoks
+		      \end{tabular}
+		  \end{center}
+	      \end{table}
+	      \fi
+
+	  \end{boldenv}
+      \end{margepagetitre}
+
+      \vskip.01cm\newpage
+      \newpage\mbox{} % PSL, force a pagebreak in fake twopage.
+  }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Nouveaux environnements.
 
-   %\newenvironment{appendices}
-   %  {
-   %    \begin{singlespace}
-   %    \addcontentsline{toc}{chapter}{\MakeUppercase{appendices}}
-   % }
-   %  {\end{singlespace}\addvspace{3cm}}
+  %\newenvironment{appendices}
+  %  {
+  %    \begin{singlespace}
+  %    \addcontentsline{toc}{chapter}{\MakeUppercase{appendices}}
+  % }
+  %  {\end{singlespace}\addvspace{3cm}}
 
 
-  \newenvironment{chapintro}{\begin{singlespace}}{\end{singlespace}\addvspace{3cm}} % pour introduction des chapitres
-
+  \newenvironment{chapintro}{\begin{singlespace}}{\end{singlespace}\addvspace{3cm}}
+      % pour introduction des chapitres
 
   \newenvironment{liste} % pour la liste des abreviations et des symboles
                  {\list{}{\labelwidth\z@ \itemindent-\leftmargin
-                          \let\makelabel\listelabel}}
-                 {\endlist}
-  \newcommand*\listelabel[1]{\hspace\labelsep
-                                  \normalfont\bfseries #1}
+			  \let\makelabel\listelabel}} {\endlist}
+
+  \newcommand*\listelabel[1]{\hspace\labelsep \normalfont\bfseries #1}
 
   \newenvironment{listeglossaire} % pour le glossaire
                  {\list{}{\labelwidth\z@ \itemindent-\leftmargin
@@ -80,6 +237,7 @@
   \newcommand*\listeglossairelabel[1]{\hspace\labelsep
                                   \normalfont\bfseries #1}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environnements modifies.
 
   \renewenvironment{theindex}
@@ -154,111 +312,7 @@
 % \renewcommand\tablename{Tableau}
 
 
-% Page Titre. Modified
-
-  \newcommand\Grade[1]{\newcommand\@Grade{#1}}
-  \newcommand\Etablissement[1]{\newcommand\@Etablissement{#1}}
-  \newcommand\EcoleDoctorale[1]{\newcommand\@EcoleDoctorale{#1}}
-  \newcommand\UniteRecherche[1]{\newcommand\@UniteRecherche{#1}}
-  \newcommand\Specialite[1]{\newcommand\@Specialite{#1}}
-  \newcommand\Auteur[1]{\newcommand\@Auteur{#1}}
-  \newcommand\Titre[1]{\newcommand\@Titre{#1}}
-  \newcommand\Date[3]{\newcommand\@Datej{#1}\newcommand\@Datem{#2}\newcommand\@Datea{#3}}
-%  \newcommand\These{\newcommand\@Travail{TH\`ESE}\newcommand\@Presente{PR\'{E}SENT\'{E}E}}
-  \newcommand\These{\newcommand\@Travail{Th\`ese}\newcommand\@Presente{pr\'esent\'ee}}
-  \newcommand\Memoire{\newcommand\@Travail{M\'EMOIRE}\newcommand\@Presente{PR\'{E}SENT\'{E}}}
-
-% http://tlsflyleaf.onada.fr/index.php To look for jury composition
-  \newcommand{\JuryA}[6]{\newcommand\@JuryAcv{#1}\newcommand\@JuryAprenom{#2}
-      \newcommand\@JuryAnom{#3}\newcommand\@JuryAgrade{#4}\newcommand\@JuryAetablissement{#5}\newcommand\@JuryAstatut{#6}}
-  \newcommand{\JuryB}[6]{\newcommand\@JuryBcv{#1}\newcommand\@JuryBprenom{#2}
-      \newcommand\@JuryBnom{#3}\newcommand\@JuryBgrade{#4}\newcommand\@JuryBetablissement{#5}\newcommand\@JuryBstatut{#6}}
-  \newcommand{\JuryC}[6]{\newcommand\@JuryCcv{#1}\newcommand\@JuryCprenom{#2}
-      \newcommand\@JuryCnom{#3}\newcommand\@JuryCgrade{#4}\newcommand\@JuryCetablissement{#5}\newcommand\@JuryCstatut{#6}}
-  \newcommand{\JuryD}[6]{\newcommand\@JuryDcv{#1}\newcommand\@JuryDprenom{#2}
-      \newcommand\@JuryDnom{#3}\newcommand\@JuryDgrade{#4}\newcommand\@JuryDetablissement{#5}\newcommand\@JuryDstatut{#6}}
-  \newcommand{\JuryE}[6]{\newcommand\@JuryEcv{#1}\newcommand\@JuryEprenom{#2}
-      \newcommand\@JuryEnom{#3}\newcommand\@JuryEgrade{#4}\newcommand\@JuryEetablissement{#5}\newcommand\@JuryEstatut{#6}}
-  \newcommand{\JuryF}[6]{\newcommand\@JuryFcv{#1}\newcommand\@JuryFprenom{#2}
-      \newcommand\@JuryFnom{#3}\newcommand\@JuryFgrade{#4}\newcommand\@JuryFetablissement{#5}\newcommand\@JuryFstatut{#6}}
-
-  \definecolor{titlepagecolor}{cmyk}{0,0,0,80}
-  \definecolor{titlepagecolor2}{RGB}{196,175,153}
-
-
-  %\def\margepagetitre#1{\list{}{\leftmargin#1}\item[]}
-  \def\margepagetitre#1#2{\list{}{\leftmargin#1\rightmargin#2}\item[]}
-  \let\endquote=\endlist
-
-  \newcommand\Pagetitre{
-      \begin{margepagetitre}{3.75cm}{-1cm}
-	  %\setlength\textwidth{19cm}
-      \thispagestyle{empty} 
-
-	\null\vskip+1.0cm % PSL
-
-      %En-tête
-	\begin{tikzpicture}[remember picture,overlay]
-	    %Banière
-	    \node [rectangle, 
-		    bottom color=titlepagecolor!40!white, 
-		    top color=white, 
-		    anchor=north west, 
-		    minimum width=6.0cm, 
-		minimum height=\paperheight-0.8cm] (box) at
-		([xshift=0.4cm, yshift=-0.4cm]current page.north west){};
-	%dashed line
-		\draw [dash pattern= on 0.6mm off 0.4mm] ([xshift=6.2cm, yshift=-0.4cm]current page.north
-      west) -- ([xshift=6.2cm, yshift=0.4cm]current page.south
-      west);
-
-% Logo établissement
-  \node [anchor=south west] (logo1) at ([xshift=1.2cm, yshift=1cm]current
-      page.south west){\includegraphics[width=4cm]{img/logo_um.pdf}};
-% Logo collège doctoral
-  \node [anchor=north west] (logo2) at ([xshift=1.2cm, yshift=-2cm]current page.north
-      west){\includegraphics[width=4cm]{img/logo_college_doctoral_LR.pdf}};
-% Logo grade
-  \node [anchor=north west, text width=\paperwidth, text height=4cm] (grade) at ([xshift=6.5cm, yshift=-2cm]current
-      page.north west){\includegraphics[width=12cm]{img/logo_grade_docteur.pdf}};
-
-      \end{tikzpicture}
-
-      \begin{center}
-
-  	\vskip0.1cm{D\'elivr\'ee par \MakeUppercase{\@Etablissement}} \\
-	\vskip1cm{Pr\'epar\'ee au sein de l'\'ecole doctorale \MakeUppercase{\@EcoleDoctorale}} \\
-	%\vskip0.1cm{Et de l'unit\'e de recherche \@UniteRecherche}
-	\vskip0.1cm{Et des unit\'es de recherche \@UniteRecherche}
-  	\vskip0.5cm{Specialit\'e: \@Specialite} \\
-  	\vskip2cm{Pr\'esent\'ee par \@Auteur} \\
-
-  	\vskip2cm\textbf{\MakeUppercase{\@Titre}}
-
-	\vskip1cm{Soutenue le {\@Datej} {\@Datem} {\@Datea}  devant le jury
-	compos\'e de}
-	\vskip1.5cm
-      \end{center}
-
-      \vskip.01cm{\@JuryAcv\ \@JuryAprenom\ \@JuryAnom, \@JuryAgrade,
-	\@JuryAetablissement,\hfill \@JuryAstatut} \\
-	{\@JuryBcv\ \@JuryBprenom\ \@JuryBnom, \@JuryBgrade,
-	\@JuryBetablissement,\hfill \@JuryBstatut} \\
-	{\@JuryCcv\ \@JuryCprenom\ \@JuryCnom, \@JuryCgrade,
-	\@JuryCetablissement,\hfill \@JuryCstatut} \\
-	{\@JuryDcv\ \@JuryDprenom\ \@JuryDnom, \@JuryDgrade,
-	\@JuryDetablissement,\hfill \@JuryDstatut} \\
-	{\@JuryEcv\ \@JuryEprenom\ \@JuryEnom, \@JuryEgrade,
-	\@JuryEetablissement,\hfill \@JuryEstatut} \\
-	{\@JuryFcv\ \@JuryFprenom\ \@JuryFnom, \@JuryFgrade,
-	\@JuryFetablissement,\hfill \@JuryFstatut} \\
-
-    \end{margepagetitre}
-
-    \vskip.01cm\newpage
-    \newpage\mbox{} % PSL, force a pagebreak in fake twopage.
-  }
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Autres sections.
 
   \newcommand\remerciements{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
@@ -314,8 +368,13 @@
     \if@restonecol
      \twocolumn\fi}
 
-   \newcommand\abstract{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
-     \fi\chapter*{\textit{\@abstract}}
+   \newcommand\abstract{
+       \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+     \fi\chapter*{
+	 \ifdef{\@titleEng}{\MakeUppercase{\@titleEng}}{\MakeUppercase{Title
+	 in English}}
+	 \vskip1cm
+     \textit{\@abstract} }
      \phantomsection\addcontentsline{toc}{chapter}{\MakeUppercase{\@abstract}}
      \if@restonecol
      \twocolumn\fi}
@@ -342,6 +401,7 @@
     \if@restonecol
      \twocolumn\fi}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Table des matieres et liste.
 
   \setcounter{secnumdepth}{4}
@@ -375,6 +435,8 @@
   \let\l@table\l@figure
   \renewcommand\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Chapitres.
 
   \renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
@@ -388,7 +450,9 @@
                            \refstepcounter{chapter}%
                            \typeout{\@chapapp\space\arabic{chapter}.}%
                            \addcontentsline{toc}{chapter}%
-   {\protect\numberline{\MakeUppercase{\@chapapp}\space\MakeUppercase{\arabic{chapter}}} \\ \MakeUppercase{#1}}
+   {\protect\numberline{\MakeUppercase{\@chapapp}\space\MakeUppercase{\arabic{chapter}}}
+   \texorpdfstring{\\ \MakeUppercase{#1}}{}}
+   %https://tex.stackexchange.com/questions/10555/hyperref-warning-token-not-allowed-in-a-pdf-string 
                          \else
                            \typeout{#1}%
                            \addcontentsline{toc}{chapter}\MakeUppercase{#1}
@@ -435,6 +499,8 @@
       \end{center}
     }}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendices.
 
   \newcommand\appendice{\if@openright\cleardoublepage\else\clearpage\fi
@@ -448,7 +514,7 @@
                            \refstepcounter{annexe}%
                            \typeout{\MakeUppercase{Annexe}\space\Roman{annexe}}%
                            \addcontentsline{toc}{chapter}%
-   {\protect\numberline{\MakeUppercase{Annexe}\space \Roman{annexe}} \\ \MakeUppercase{#1}}%
+   {\protect\numberline{\MakeUppercase{Annexe}\space \Roman{annexe}} \texorpdfstring{\\ \MakeUppercase{#1}}{}}%
                          \else
                            \typeout{#1}%
                            \addcontentsline{toc}{chapter}\MakeUppercase{#1}%
@@ -520,35 +586,45 @@
   {\normalsize\bfseries}} % style
 
 
-% Type de citation modifiee.
+% From Kévin preamble:
 
-  \def\@biblabel#1{\hspace*{-\labelsep}} % enleve les numeros de la bibliographie
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
 
-  \renewenvironment{thebibliography}[1]
-       {\chapter*{\@references}%
-        \addcontentsline{toc}{chapter}\MakeUppercase{\@references}
-        \list{\@biblabel{\@arabic\c@enumiv}}%
-             {\settowidth\labelwidth{\@biblabel{#1}}%
-              \leftmargin\labelwidth
-              \advance\leftmargin\labelsep
-              \@openbib@code
-              \usecounter{enumiv}%
-              \let\p@enumiv\@empty
-              \renewcommand\theenumiv{\@arabic\c@enumiv}}%
-        \sloppy
-        \clubpenalty4000
-        \@clubpenalty \clubpenalty
-        \widowpenalty4000%
-        \sfcode`\.\@m}
-       {\def\@noitemerr
-         {\@latex@warning{Empty `thebibliography' environment}}%
-        \endlist}
+%\captionsetup{singlelinecheck=false}
+% \captionsetup{singlelinecheck=false}
 
-  \renewcommand{\@cite}[2]{{\textsuperscript{[#1]}\ifthenelse{\boolean{@tempswa}}{,#2}{}}}
+% Taille des légendes des 'Long Tables'
+%\setlength{\LTcapwidth}{\linewidth}
+% \setlength{\LTcapwidth}{1.5\linewidth} 
+\setlength{\footnotesep}{1cm}
 
-  \pagestyle{myheadings}
+%Régler le problème des Et/And entre deux auteurs (voir le fichier "tutoriel bst")
+\newcommand*{\andname}{and}
+      \addto \captionsenglish {\renewcommand*{\andname}{and}}
+      \addto \captionsfrench  {\renewcommand*{\andname}{et}}
+%Intitulé des figures en français
+\addto\captionsfrench{\renewcommand{\figurename}{Figure}}
+%Intitulé des tableaux en français
+\addto\captionsfrench{\renewcommand{\tablename}{Tableau}}
+
+
+%% Headings style numbering:
+\pagestyle{myheadings}{
   \pagenumbering{roman}
   \if@twoside
   \else
   \fi
   \endinput
+  }

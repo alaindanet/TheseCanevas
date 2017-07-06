@@ -1,52 +1,27 @@
-% ----------------------------------------------------------------------%
-% Coquille pour thèses et mémoires.                                     %
-% UQAR, 29 mai 2009.                                                    %
-% Modifié par F. Cyr - aout 2013                                        %
-%		 AC. Tassel - janvier 2014                                          %
-%		 C. Rigaud - 2014-2015                                              %
-% ----------------------------------------------------------------------%
+\documentclass[a4paper, twoside, 12pt]{stylethese}
 
-% ----------------------------------------------------------------------%
-% Kevin Cazelles: J'ai utilisé ce template car c'est ce que j'ai utilisé
-%  pour ma thèse
-% ----------------------------------------------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package loading
 
-
-
-% ----------------------------------------------------------------------%
-% 1- Préambule.                                                        %
-% ----------------------------------------------------------------------%
-
-% Pour le dépôt initial (recto), utiliser oneside.
-% Pour le dépôt final  (recto-verso), remplacer oneside par twoside.
-
-\documentclass[12pt,oneside,francais,a4paper]{stylethese}
-% \documentclass[12pt,twoside,letterpaper]{stylethese}
-
-\raggedbottom % Évite les espaces trop gands entre chaque section.
-
-% \usepackage{multirow}
+%% Liens hypertextes: 
+\usepackage[linktocpage=true, linkcolor=cyan, citecolor=cyan, colorlinks=true,
+urlcolor=blue, pagebackref]{hyperref}
+%% Citations: 
 \usepackage{natbib}
+%% Bibliographie par chapître
+\usepackage{chapterbib}
+%% Mathématiques:
 \usepackage{amssymb,amsmath}
-\usepackage{enumerate} % For fancy enumerate item labels.
-% \usepackage{utopia}
+%% Encoding:
+\usepackage[utf8]{inputenc}
+%% Check overfull box:
 \usepackage{txfonts,empheq}
-%\usepackage{chancery}
-%\usepackage{ccaption}		 %pour utiliser \legend (pour l'explication de la figure,texte plus long)
-%\usepackage{pgfplots}      	 % dessiner des graphes direct dans LaTeX
-%\pgfplotsset{compat=1.3}
-\usepackage{multicol}
-
-\usepackage[utf8x]{inputenc}
-\usepackage{ucs}
+%% Font used:
+\usepackage{lmodern}
+%% For font warnings in code block:
+\usepackage[T1]{fontenc}
 
 
-\usepackage{chapterbib} % <----- for bibliography per chapter
-%\usepackage[duplicate]{chapterbib}
-%\usepackage{url}
-
-% Ajout Cyril :
-\usepackage[linktocpage=true,linkcolor=cyan,citecolor=cyan,colorlinks=true,urlcolor=blue,pagebackref]{hyperref}
 \usepackage[english,french]{cleveref}
 \usepackage{upgreek}
 \usepackage{textcomp}
@@ -64,28 +39,12 @@
 \usepackage{color}
 \usepackage{ulem}
 
+\raggedbottom % Évite les espaces trop gands entre chaque section.
 
-%%------------------ Ajout Kevin Cazelles
-%%------------------ Ce qu'on a besoin pour inclure du code
-%%------------------ => c'est ce qu'utilise pandoc pour faire mettre en page les
-%%------------------ des code chunk (pour l'obtenir, voir template ou faire
-%%------------------ un exemple minimal avec du code en md puis le convertir en
-%%------------------ Latex avec l'option standalone (option -s))
-\usepackage{lmodern}
-% \usepackage{ifxetex,ifluatex}
-% \usepackage{fixltx2e} % provides \textsubscript
-% \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-%   \usepackage[T1]{fontenc}
-%   \usepackage[utf8]{inputenc}
-% \else % if luatex or xelatex
-%   \ifxetex
-%     \usepackage{mathspec}
-%   \else
-%     \usepackage{fontspec}
-%   \fi
-%   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-% \fi
-% use upquote if available, for straight quotes in verbatim environments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configuration for code displayed in intro.tex  
+% From Kevin
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
@@ -93,8 +52,6 @@
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
-% \usepackage[unicode=true]{hyperref}
-% \hypersetup{pdfborder={0 0 0}, breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -139,81 +96,28 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 }
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Variable definitions
+\title{Mon super titre}
+%\titleEng{}
+\author{Prénom Nom}
+%\docschool{\'Ecole Doctorale PNC}
+%\lab{Un merveilleux laboratoire}
+%\field{la meilleure spé}
+%\university{}
+%\defensedate{11 juillet 2014}
 
-
-\captionsetup{singlelinecheck=false}
-% \captionsetup{singlelinecheck=false}
-
-% Taille des légendes des 'Long Tables'
-\setlength{\LTcapwidth}{\linewidth}
-% \setlength{\LTcapwidth}{1.5\linewidth} 
-
-
-
-%Marge inférieure avec note de bas de page
-\setlength{\footnotesep}{1cm}
-
-%Régler le problème des Et/And entre deux auteurs (voir le fichier "tutoriel bst")
-\newcommand*{\andname}{and}
-      \addto \captionsenglish {\renewcommand*{\andname}{and}}
-      \addto \captionsfrench  {\renewcommand*{\andname}{et}}
-
-%Intitulé des figures en français
-\addto\captionsfrench{\renewcommand{\figurename}{Figure}}
-
-%Intitulé des tableaux en français
-\addto\captionsfrench{\renewcommand{\tablename}{Tableau}}
-
-% Interligne 1 et 1/2.
-\setstretch{1.5}
-
-% Pour créer un index (optionnel).
-\makeindex
-
-% Info sur la thèse (Titre, auteur, etc.)
-\Titre{LE TITRE DE LA TH\'ESE}
-% Mettre en majuscule!!
-\Grade{Docteur}
-\Etablissement{Universit\'e de Montpellier}
-\Specialite{\'Ecologie Biodiversit\'e}
-\EcoleDoctorale{Gaia}
-\UniteRecherche{UMR AMAP et ISEM}
-
-\Auteur{Alain Danet}
-    
-\Date{10}{Novembre}{2017}
-
-\JuryA{Mr}{Fabien}{Anthelme}{CR}{IRD Montpellier}{Directeur de thèse}
-\JuryB{Mr}{Olivier}{Dangles}{DR}{IRD Orsay}{Rapporteur}
-\JuryC{Mme}{Sonia}{Kéfi}{CR}{CNRS Montpellier}{Directrice de thèse}
-\JuryD{Mr}{François}{Munoz}{PU}{Univ. de Grenoble}{Examinateur}
-\JuryE{Mme}{Yolanda}{Pueyo}{Tenured Scientist}{CSIC}{Rapportrice}
-\JuryF{Mme}{Catherine}{Roumet}{CR}{CNRS}{Examinatrice}
-
-\These
+\njurymembers{0}
+%\addjurymember{1}{M.}{Prénom Nom}{Directeur de thèse}
 
 \Articles
 
-
-
 \begin{document}
-\pdfstringdefDisableCommands{%
+\pdfstringdefDisableCommands{
+% Alain: I do not know what it is exactly but liminaires will not not compile
+% without it 
 \let\MakeUppercase\relax}
-
 
 
 % ----------------------------------------------------------------------%
@@ -221,10 +125,6 @@
 % ----------------------------------------------------------------------%
 
 \include{liminaires}
-
-
-
-
 
 
 % ----------------------------------------------------------------------%
@@ -240,10 +140,9 @@
 \introduction
 \selectlanguage{french}
 
-% \chapter{INTRODUCTION GÉNÉRALE}
+\chapter{INTRODUCTION GÉNÉRALE}
 \input{intro.tex}
 \cleardoublepage
-
 
 \selectlanguage{english}
 
@@ -259,21 +158,12 @@
 \input{conclu.tex}
 \cleardoublepage
 
-
-
-
 % ----------------------------------------------------------------------%
 % 4 - Appendices de la thèse.                                           %
 % ----------------------------------------------------------------------%
 
-
 \input{annexe1/annexe1.tex}
 \input{annexe2/annexe2.tex}
-
-
-
-
-
 
 % ----------------------------------------------------------------------%
 % 5 - Bibliographie.                                                    %
