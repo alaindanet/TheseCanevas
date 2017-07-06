@@ -29,7 +29,7 @@
   \NeedsTeXFormat{LaTeX2e}
   % The date below is really important:
   % https://tex.stackexchange.com/questions/166558/custom-class-creating-compilation-problems
-  \ProvidesClass{stylethese2}[2017/07/05 Style pour theses UM]
+  \ProvidesClass{stylethese}[2017/07/05 Style pour theses UM]
   \RequirePackage{setspace,remreset,graphicx,makeidx,ifthen, tikz}
   \RequirePackage[english,frenchb]{babel} % frenchb default
   %https://tex.stackexchange.com/questions/9908/difference-between-loadclass-and-loadclasswithoptions 
