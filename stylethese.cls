@@ -193,7 +193,7 @@
   \newcommand\Pagetitre{
       \begin{margepagetitre}{3.75cm}{-1cm}
 	  %\setlength\textwidth{19cm}
-    
+      \thispagestyle{empty} 
 
 	\null\vskip+1.0cm % PSL
 
