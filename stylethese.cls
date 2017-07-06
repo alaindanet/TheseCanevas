@@ -98,11 +98,15 @@
   % number of jury members:
   \def\njurymembers#1{\def\@njurymembers{#1}}
 
-  \newcommand{\addjurymember}[4]{%
+
+  \newcommand{\addjurymember}[6]{%
       \expandafter\gdef\csname @juryTitle#1\endcsname{#2}
       \expandafter\gdef\csname @juryName#1\endcsname{#3}
-      \expandafter\gdef\csname @juryFunction#1\endcsname{#4}
+      \expandafter\gdef\csname @juryGrade#1\endcsname{#4}
+      \expandafter\gdef\csname @juryInstitute#1\endcsname{#5}
+      \expandafter\gdef\csname @juryFunction#1\endcsname{#6}
   }
+
 
   \newtoks\@tabtoks
   \newcommand\addtabtoks[1]{\global\@tabtoks\expandafter{\the\@tabtoks#1}}
@@ -175,36 +179,37 @@
 
 		  \vskip1cm{Soutenue le devant le jury compos\'e de}
 		  \vskip1.5cm
+
 	      \end{center}
 
-	      \resettabtoks
+      \resettabtoks
+	          
 
-	      \foreach \n in {1,...,\@njurymembers}
-	      {%
-		  \-\hspace{0.7cm} 
-		  \eaddtabtoks{ {\csname @juryTitle \n \endcsname} }
-		  \eaddtabtoks{ {\csname @juryName \n \endcsname} }
-		  \addtabtoks{ & } \eaddtabtoks{({\csname @juryFunction \n \endcsname
-		  }) }
+	      \foreach \n in {1,...,\@njurymembers} {%
+		  \-\hspace{0.7cm}% 
+		  \eaddtabtoks{ {\csname @juryTitle\n \endcsname} } %
+		  \eaddtabtoks{ {\csname @juryName\n \endcsname}, }%
+		  \eaddtabtoks{ {\csname @juryGrade\n \endcsname}, }%
+		  \eaddtabtoks{ {\csname @juryInstitute\n \endcsname} }%
+		  \addtabtoks{ & \hfill }%
+		  \eaddtabtoks{({\csname @juryFunction\n \endcsname}) }%
 	      \addtabtoks{ \\ } }%
 
 	      %% http://tlsflyleaf.onada.fr/down.php
 	      \ifnum \@njurymembers=0
 	     Membres du jury 
 	      \else
-	      \begin{table}[h!]
-		  \large
-		  \begin{center}
-		      \begin{tabular}{*{2}{p{0.34\textwidth}}}          
-			  \printtabtoks
-		      \end{tabular}
-		  \end{center}
+	     \begin{table}[h!]
+		  \footnotesize
+		\advance\leftskip\leftmargin	
+		\begin{tabular}{lr}  %instead of 5cm
+		    \printtabtoks
+		\end{tabular}
 	      \end{table}
 	      \fi
 
 	  \end{boldenv}
       \end{margepagetitre}
-
       \vskip.01cm\newpage
       \newpage\mbox{} % PSL, force a pagebreak in fake twopage.
   }
