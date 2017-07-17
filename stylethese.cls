@@ -30,6 +30,10 @@
   % The date below is really important:
   % https://tex.stackexchange.com/questions/166558/custom-class-creating-compilation-problems
   \ProvidesClass{stylethese}[2017/07/05 Style pour theses UM]
+  % Voir les marges
+  \RequirePackage[noframe]{showframe}
+  %Font
+  \RequirePackage[default, osfigures]{opensans}
   \RequirePackage{setspace,remreset,graphicx,makeidx,ifthen, tikz}
   \RequirePackage[english,frenchb]{babel} % frenchb default
   %https://tex.stackexchange.com/questions/9908/difference-between-loadclass-and-loadclasswithoptions 
@@ -51,7 +55,11 @@
   \newenvironment{boldenv}
     {\bfseries}% \begin{boldenv}
       {}% \end{boldenv}
+  \newenvironment{sboldenv}
+    {\fontseries{sb}\selectfont}% \begin{sboldenv}
+      {}% \end{sboldenv}
 
+	  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Margin.
@@ -78,7 +86,6 @@
     \setlength\textheight     {21.6cm}
   \fi
 
-%https://tex.stackexchange.com/questions/588/how-can-i-change-the-margins-for-only-part-of-the-text
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,7 +105,6 @@
   % number of jury members:
   \def\njurymembers#1{\def\@njurymembers{#1}}
 
-
   \newcommand{\addjurymember}[6]{%
       \expandafter\gdef\csname @juryTitle#1\endcsname{#2}
       \expandafter\gdef\csname @juryName#1\endcsname{#3}
@@ -107,6 +113,12 @@
       \expandafter\gdef\csname @juryFunction#1\endcsname{#6}
   }
 
+  % number of jury members:
+  \def\nsupervisors#1{\def\@nsupervisors{#1}}
+
+  \newcommand{\addsupervisor}[2]{%
+      \expandafter\gdef\csname @supervisorName#1\endcsname{#2}
+  }
 
   \newtoks\@tabtoks
   \newcommand\addtabtoks[1]{\global\@tabtoks\expandafter{\the\@tabtoks#1}}
@@ -114,76 +126,78 @@
   \newcommand*\resettabtoks{\global\@tabtoks{}}
   \newcommand*\printtabtoks{\the\@tabtoks}
 
+  %https://tex.stackexchange.com/questions/588/how-can-i-change-the-margins-for-only-part-of-the-text
   \def\margepagetitre#1#2{\list{}{\leftmargin#1\rightmargin#2}\item[]}
   \let\endquote=\endlist
-  \definecolor{titlepagecolor}{cmyk}{0,0,0,80}
-  \definecolor{titlepagecolor2}{RGB}{196,175,153}
+  %um color
+  \definecolor{umred}{RGB}{255,86,96}
+  \definecolor{umblue}{RGB}{75,194,188}
+  \definecolor{concrete}{RGB}{149,165,166}
+  \definecolor{titlecolor}{RGB}{114,146,162}
 
-  \newcommand\Pagetitre{
+  \newcommand\Pagetitre{ %\AddToShipoutPicture*{\ShowFramePicture}
       \thispagestyle{empty}% Suppress numbering for title page 
-      \begin{margepagetitre}{3.75cm}{-1cm}
-	  %\setlength\textwidth{19cm}
-	  \begin{boldenv}
+      \begin{margepagetitre}{-1cm}{1cm}
+
+	  \begin{sboldenv}
 	    
       %En-tête
 	      \begin{tikzpicture}[remember picture,overlay]
-		  %Banière
-		  \node [rectangle, 
-		      bottom color=titlepagecolor!40!white, 
-		      top color=white, 
-		      anchor=north west, 
-		      minimum width=6.0cm, 
-		      minimum height=\paperheight-0.8cm] (box) at
-		      ([xshift=0.4cm, yshift=-0.4cm]current page.north west){};
-		  %dashed line
-		  \draw [dash pattern= on 0.6mm off 0.4mm] ([xshift=6.2cm, yshift=-0.4cm]current page.north
-		      west) -- ([xshift=6.2cm, yshift=0.4cm]current page.south
-		      west);
+		  % Image arrière plan
+		  \node[opacity=1.0, inner sep=0pt] at (current
+		  page.center){\includegraphics[width=\paperwidth,height=\paperheight]{img/fond_UM.pdf}}; 
 
-		  % Logo établissement
-		  \node [anchor=south west] (logo1) at ([xshift=1.2cm, yshift=1cm]current
-		      page.south west){\includegraphics[width=4cm]{img/logo_um.pdf}};
-		  % Logo collège doctoral
-		  \node [anchor=north west] (logo2) at ([xshift=1.2cm, yshift=-2cm]current page.north
-		      west){\includegraphics[width=4cm]{img/logo_college_doctoral_LR.pdf}};
-		  % Logo grade
-		  \node [anchor=north west, text width=\paperwidth, text height=4cm] (grade) at ([xshift=6.5cm, yshift=-2cm]current
-		      page.north west){\includegraphics[width=12cm]{img/logo_grade_docteur.pdf}};
-
+		  \node[opacity=1.0, inner sep=0pt, yshift = 3cm] at (current
+		  page.south){\includegraphics[width=0.5\textwidth]{img/logo_um_texte.pdf}};
 	      \end{tikzpicture}
 
 	      \begin{center}
 
-		  \null\vskip+2.0cm % PSL
+		  \vspace*{-2cm}
+		  \textcolor{umred}{\Large TH\`ESE
+		      POUR OBTENIR LE GRADE DE DOCTEUR\\ 
+		  \vskip0.2cm{DE L'UNIVERSIT\'E DE MONTPELLIER}}
 
-		  \vskip0.1cm{D\'elivr\'ee par
-		  \ifdef{\@university}{ \MakeUppercase{\@university} }{~}} \\
-		  \vskip1cm{Pr\'epar\'ee au sein de l'\'ecole doctorale
+
+		  \vskip0.4cm{\fontseries{sb}\selectfont En 
+		  \ifdef{\@field}{\@field}{[intitul\'e du dipl\^ome]}} \\
+
+		  \vskip0.3cm{\'Ecole doctorale
 		  \ifdef{\@docschool}{ \MakeUppercase{\@docschool} }{~}} \\
-		  %\vskip0.1cm{Et de l'unit\'e de recherche \@UniteRecherche}
-		  \vskip0.1cm{Et des unit\'es de recherche 
+
+		  \vskip0.3cm{Unit\'e de recherche
+		  %\vskip0.1cm{Unit\'es de recherche 
 		  \ifdef{\@lab}{\@lab}{~}}
-		  \vskip0.5cm{Specialit\'e: 
-		  \ifdef{\@field}{\@field}{~}} \\
-		  \vskip2cm{Pr\'esent\'ee par 
-		  \ifdef{\@author}{\@author}{Pr\'enom Nom}} \\
 
-		  \vskip2cm
-		  \fbox{
-		      \begin{minipage}[t][3cm][t]{\textwidth-4cm}\centering
-			  \textbf{\ifdef{\@title}{\Large\MakeUppercase{\@title}}{\Large\MakeUppercase{titre
-			  de la Th\`ese}}}
-		      \end{minipage}
-		  }
-
-
-		  \vskip1cm{Soutenue le devant le jury compos\'e de}
 		  \vskip1.5cm
+		  \textcolor{titlecolor}{
+			  \ifdef{\@title}{\Large{\@title}}{\Large{Titre
+			  de la th\`ese}}}
+
+		  \vskip3cm{\fontseries{sb}\large Pr\'esent\'ee par 
+		  \ifdef{\@author}{\@author}{[Pr\'enom NOM]}} \\
+
+		  \vskip0.1cm{\large Le 
+		  \ifdef{\@defensedate}{\@defensedate}{~[XX mois ann\'ee]}} \\
+
+		  \vskip1cm{Sous la direction de
+	      \ifnum \@nsupervisors=0
+	      Pr\'enom NOM
+
+		  ~
+		  \else
+	      \foreach \n in {1,...,\@nsupervisors} {%
+		  {\csname @supervisorName\n \endcsname}
+	      }
+		  \fi
+	      }
+
+		  \vskip1cm{Devant le jury compos\'e de }
+		  \vskip0.0cm
 
 	      \end{center}
 
       \resettabtoks
-	          
 
 	      \foreach \n in {1,...,\@njurymembers} {%
 		  \-\hspace{0.7cm}% 
@@ -202,13 +216,13 @@
 	     \begin{table}[h!]
 		  \footnotesize
 		\advance\leftskip\leftmargin	
-		\begin{tabular}{lr}  %instead of 5cm
+		\begin{tabular}{p{0.7\textwidth}p{0.3\textwidth}}  %instead of 5cm
 		    \printtabtoks
 		\end{tabular}
 	      \end{table}
 	      \fi
 
-	  \end{boldenv}
+	  \end{sboldenv}
       \end{margepagetitre}
       \vskip.01cm\newpage
       \newpage\mbox{} % PSL, force a pagebreak in fake twopage.

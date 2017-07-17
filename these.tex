@@ -99,19 +99,23 @@ urlcolor=blue, pagebackref]{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Variable definitions
-\title{Mon super titre}
+\title{Titre de la thèse}
 %\titleEng{}
-\author{Prénom Nom}
+\author{Prénom NOM}
 %\docschool{\'Ecole Doctorale PNC}
 %\lab{Un merveilleux laboratoire}
-%\field{la meilleure spé}
-%\university{}
-%\defensedate{11 juillet 2014}
+%\field{[Intitulé du diplome]}
+%\defensedate{[XX mois année]}
+
+%% Number of supervisors:
+\nsupervisors{2}
+\addsupervisor{1}{Prénom NOM et}
+\addsupervisor{2}{Prénom NOM}
 
 %% Number of jury members:
 \njurymembers{2}
 %% Définition
-\addjurymember{1}{Mme.}{Prénom Nom}{Grade}{Établissement}{Directeur de thèse}
+\addjurymember{1}{Mme.}{Prénom Nom}{Grade}{Établissement}{Rapportrice}
 \addjurymember{2}{M.}{Prénom Nom}{Grade}{Établissement}{Directeur de thèse}
 
 % These sur articles (voir stylethese.cls)
@@ -119,7 +123,7 @@ urlcolor=blue, pagebackref]{hyperref}
 
 \begin{document}
 \pdfstringdefDisableCommands{
-% Alain: I do not know what it is exactly but liminaires will not not compile
+% Alain: I do not know what it is exactly but liminaires will not compile
 % without it 
 \let\MakeUppercase\relax}
 
